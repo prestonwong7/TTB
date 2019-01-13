@@ -79,7 +79,7 @@ def main(top, inventory_arr, log_arr):
     # This is the inventory log
     """
  
-    spreadsheet_id = '' # Deleted for privacy sake
+    spreadsheet_id = '1o-2g1auCy_i2a-LzcXMTs85REyUToOkT15XuR9TCy9g' # Deleted for privacy sake
     range_ = 'Sheet1!A1:J'
     # How the input data should be interpreted.
     value_input_option = 'USER_ENTERED'
@@ -102,28 +102,28 @@ def main(top, inventory_arr, log_arr):
     response = request.execute()
     pprint(response)
 
-    """
-    # This is the program log
-    """
-    spreadsheet_id = '' # Deleted for privacy sake
-    range_ = 'Sheet1!A1:F'
-    # How the input data should be interpreted.
-    value_input_option = 'USER_ENTERED'
-    # How the input data should be inserted.
-    insert_data_option = 'INSERT_ROWS'
-    values = log_arr
-    value_range_body = {
-        'values': values
-    }
-    request = service.spreadsheets().values().append(
-        spreadsheetId=spreadsheet_id, 
-        range=range_, 
-        valueInputOption=value_input_option, 
-        insertDataOption=insert_data_option, 
-        body=value_range_body
-        )
-    response = request.execute()
-    pprint(response)
+    # """
+    # # This is the program log
+    # """
+    # spreadsheet_id = '' # Deleted for privacy sake
+    # range_ = 'Sheet1!A1:F'
+    # # How the input data should be interpreted.
+    # value_input_option = 'USER_ENTERED'
+    # # How the input data should be inserted.
+    # insert_data_option = 'INSERT_ROWS'
+    # values = log_arr
+    # value_range_body = {
+    #     'values': values
+    # }
+    # request = service.spreadsheets().values().append(
+    #     spreadsheetId=spreadsheet_id, 
+    #     range=range_, 
+    #     valueInputOption=value_input_option, 
+    #     insertDataOption=insert_data_option, 
+    #     body=value_range_body
+    #     )
+    # response = request.execute()
+    # pprint(response)
 
 
     top.destroy()

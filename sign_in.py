@@ -8,6 +8,7 @@ import tkinter.font as tkFont
 # from asana_automate import main
 
 import os
+import register
 from tkinter import *
 
 def resource_path(relative_path):
@@ -115,7 +116,7 @@ class Application(tk.Frame):
 		self.sign_in_button["command"] = lambda: self.run_logic()
 		self.sign_in_button.grid(row=8, column=2, columnspan=5, pady=(20, 20), sticky='ew')
 
-	#Caleed from ONLY the back button
+	#Called from ONLY the back button
 	def main_menu(self, master):
 		self.master.destroy()
 		root = tk.Tk()
@@ -129,33 +130,29 @@ class Application(tk.Frame):
 		helv36 = tkFont.Font(family='Helvetica', size=36, weight='bold')
 		
 		signIn = tk.Button(mainframe, text="Sign In", padx='10', pady='10', font = helv36, borderwidth='5' , background = "#FF4435")
-		signIn["command"] = lambda: start_this_program(True, root)
+		signIn["command"] = lambda: self.start_this_program(True, root)
 		signIn.pack(side="top")
 
 		register = tk.Button(mainframe, text="Register", padx='10', pady='10', font = helv36, borderwidth='5', background = "#005EC4")
-		register["command"] = lambda: start_this_program(False, root)
+		register["command"] = lambda: self.start_this_program(False, root)
 		register.pack(side='top')
-
 
 	#USED FOR BACK BUTTON in main_menu
 	def start_this_program(self, true_if_signin, parent):
 		if true_if_signin:
-			si.run_gui(parent)
+			run_gui(parent)
 		else:
-			re.run_gui(parent)
+			register.run_gui(parent)
 	
 	# Called by the run button
 	# Makes various calls to functions in error_check.py
 	def run_logic(self):
-		self.p = PromptPopup("Final Confirmation",
-			"Push to Asana and Google Sheets?",
-			[
-			["YES PROCEED", lambda: self.api_hooks(self.p)],
-			["NO CANCEL", lambda: self.dummy(self.p)],
-			]
-			)
-		self.wait_window(self.p)
-			
+		lambda: self.after_run(self.p)
+	
+	def after_run(self, top):			
+		self.status_bar_label["text"] = "Paid/Unpaid"
+		self.status_bar_label.grid(row=8, column=2, columnspan=5, pady=(20, 20))
+
 	def dummy(self, top):
 		print("Dummy function")
 		top.destroy()

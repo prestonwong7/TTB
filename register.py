@@ -8,6 +8,7 @@ import tkinter.font as tkFont
 # from asana_automate import main
 
 import os
+import sign_in as si
 from tkinter import *
 
 def resource_path(relative_path):
@@ -131,11 +132,11 @@ class Application(tk.Frame):
 		helv36 = tkFont.Font(family='Helvetica', size=36, weight='bold')
 		
 		signIn = tk.Button(mainframe, text="Sign In", padx='10', pady='10', font = helv36, borderwidth='5' , background = "#FF4435")
-		signIn["command"] = lambda: start_this_program(True, root)
+		signIn["command"] = lambda: self.start_this_program(True, root)
 		signIn.pack(side="top")
 
 		register = tk.Button(mainframe, text="Register", padx='10', pady='10', font = helv36, borderwidth='5', background = "#005EC4")
-		register["command"] = lambda: start_this_program(False, root)
+		register["command"] = lambda: self.start_this_program(False, root)
 		register.pack(side='top')
 
 
@@ -144,7 +145,7 @@ class Application(tk.Frame):
 		if true_if_signin:
 			si.run_gui(parent)
 		else:
-			re.run_gui(parent)
+			run_gui(parent)
 	
 	# Called by the run button
 	# Makes various calls to functions in error_check.py
@@ -197,8 +198,6 @@ class WarningPopup(tk.Toplevel):
 		self.button = tk.Button(self, text="Dismiss", command=self.destroy)
 		self.button.pack()
 
-
-# Called from asana_automate.py
 # Constructor that creates the main window object
 def run_gui(parent):
 	# print(resource_path('img/icon.ico'))
@@ -208,7 +207,7 @@ def run_gui(parent):
 	w, h = root.winfo_screenwidth(), root.winfo_screenheight()
 	#root.geometry("{}x{}+0+0".format(w, h))
 	root.geometry("{}x{}+0+0".format(850, h-500))
-	root.wm_title("Sign In")
+	root.wm_title("Register")
 	app = Application(master=root)
 	app.pack(side="top", fill="both", expand=True)
 	app.mainloop()
