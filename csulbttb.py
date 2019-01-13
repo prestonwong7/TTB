@@ -29,18 +29,21 @@ if __name__ == "__main__":
 	root = tk.Tk()
 	# root.iconbitmap(resource_path('img/icon.ico'))
 	w, h = root.winfo_screenwidth(), root.winfo_screenheight()
-	root.geometry("{}x{}+0+0".format(500, 380))
+	root.geometry("{}x{}+0+0".format(1000, 1000))
 	root.wm_title("CSULB Table Tennis & Badminton Software")
 	mainframe = tk.Frame(master=root, background = "#9BE7FF")
 	mainframe.pack(side="top", fill="both", expand=True)
 
-	helv36 = tkFont.Font(family='Helvetica', size=36, weight='bold')
+	helv36 = tkFont.Font(family='century gothic', size=36, weight='normal')
+
+	title = tk.Label(mainframe, text = "CSULB Table Tennis & Badminton Software")
+	title.pack(side="top")
 	
-	signIn = tk.Button(mainframe, text="Sign In", padx='10', pady='10', font = helv36, borderwidth='5' , background = "#FF4435")
+	signIn = tk.Button(mainframe, text="Sign In", padx='20', pady='20', font = helv36, borderwidth='5' , background = "#FF4435")
 	signIn["command"] = lambda: start_this_program(True, root)
 	signIn.pack(side="top")
 
-	register = tk.Button(mainframe, text="Register", padx='10', pady='10', font = helv36, borderwidth='5', background = "#005EC4")
+	register = tk.Button(mainframe, text="Register", padx='20', pady='20', font = helv36, borderwidth='5', background = "#005EC4")
 	register["command"] = lambda: start_this_program(False, root)
 	register.pack(side='top')
 

@@ -9,20 +9,20 @@ import os
 
 from pprint import pprint
 from googleapiclient import discovery
-from oauth2client import client
-from oauth2client import tools
-from oauth2client.file import Storage
+# from oauth2client import client
+# from oauth2client import tools
+# from oauth2client.file import Storage
 
-try:
-    import argparse
-    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-except ImportError:
-    flags = None
+# try:
+#     import argparse
+#     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
+# except ImportError:
+#     flags = None
 
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/sheets.googleapis.com-python-quickstart.json
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
-CLIENT_SECRET_FILE = 'key/client_secret_sheet.json'
+# CLIENT_SECRET_FILE = 'key/client_secret_sheet.json'
 APPLICATION_NAME = 'Google Sheets API Python Quickstart'
 
 def resource_path(relative_path):
@@ -61,7 +61,11 @@ def get_credentials():
         print('Storing credentials to ' + credential_path)
     return credentials
 
-def main(top, inventory_arr, log_arr):
+if __name__ == '__main__':
+    main()
+
+# def main(top, inventory_arr, log_arr):
+def main():
     """
     BELOW: PROGRAM LOG named Automatic-Program-Log
     https://docs.google.com/spreadsheets/d/1PoSreuvJzTxuOgFfP7S-h1Hp9Z5cw41eFeBWgqez3Pw/edit

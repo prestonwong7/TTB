@@ -78,13 +78,24 @@ class Application(tk.Frame):
 		self.member_input_label.grid(row=3, column=1, columnspan=3, padx=(150, 5), pady=5)
 
 		options = {
-		'Preston Wong',
-		'Ken Le',
-		'Hanli Su'
+		'Preston Wong', 'Matthew Rahe',
+		'Ken Le','Vincent Le',
+		'Danny Nguyen','Richard Son','Jocelyn Som',
+		'Daniel Pham','Hikaru Takasugi','Christian Reyes',
+		'Diana Wong','Max Rassavong','Jeffrey Kesuma',
+		'Jose Salazar','Alexandra Kirkendall','Ngan Ta',
+		'Adalina Vu', 'Andy Nguyen', 'Joyce Nguyen',
+		'An Nguyen','Steve Fang', 'Christopher Imantaka',
+		'Julian Lam', 'Dina Bui', 'Larakaye Villanueva',
+		'Christian Wu',	'Alan Xazer','Nathan Mora',
+		'Andy Chan','Ben Lou','Peter Kim',
+		'Amanda Kim','Ethan Levine','Caryn Hoang',
+		'Jalon Flores','Richard Le','Patrick Pham',
+		'Joseph Kim'
 		}
-
+		options = sorted(options)
 		self.variable = StringVar()
-		self.variable.set("Preston Wong")
+		self.variable.set("Click Name Here")
 		self.menu = OptionMenu(f, self.variable, *options, command = self.func)
 		
 		self.menu.grid(row = 4, column = 1)
