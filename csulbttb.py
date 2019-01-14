@@ -33,19 +33,19 @@ if __name__ == "__main__":
 	root.wm_title("CSULB Table Tennis & Badminton Software")
 	mainframe = tk.Frame(master=root, background = "#9BE7FF")
 	mainframe.pack(side="top", fill="both", expand=True)
-
+ 
 	helv36 = tkFont.Font(family='century gothic', size=36, weight='normal')
 
-	title = tk.Label(mainframe, text = "CSULB Table Tennis & Badminton Software")
-	title.pack(side="top")
+	title = tk.Label(mainframe, text = "CSULB Table Tennis & Badminton Software", font = helv36)
+	title.place(relx = 0.5, rely = 0.1, anchor = 'center')
 	
-	signIn = tk.Button(mainframe, text="Sign In", padx='20', pady='20', font = helv36, borderwidth='5' , background = "#FF4435")
+	signIn = tk.Button(mainframe, text="Sign In", padx='20', pady='20', font = helv36, borderwidth='5' , background = "#ff5c33")
 	signIn["command"] = lambda: start_this_program(True, root)
-	signIn.pack(side="top")
+	signIn.place(relx = 0.5, rely = 0.3, anchor = 'center')
 
-	register = tk.Button(mainframe, text="Register", padx='20', pady='20', font = helv36, borderwidth='5', background = "#005EC4")
+	register = tk.Button(mainframe, text="Register", padx='20', pady='20', font = helv36, borderwidth='5', background = "#80b3ff")
 	register["command"] = lambda: start_this_program(False, root)
-	register.pack(side='top')
+	register.place(relx = 0.5, rely = 0.5, anchor = 'center')
 
 	#the_image = tk.PhotoImage(file=resource_path('img/cerebot.gif'))
 	#banner = tk.Label(image=the_image)

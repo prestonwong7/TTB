@@ -29,7 +29,7 @@ class Application(tk.Frame):
 		self.master = master
 
 		super().__init__(master)
-		self.canvas = tk.Canvas(master, borderwidth=0, background="#FF4435")
+		self.canvas = tk.Canvas(master, borderwidth=0, background="#9BE7FF")
 		self.mainframe = tk.Frame(self.canvas, background="#ffffff")
 		self.vsb = tk.Scrollbar(master, orient="vertical", command=self.canvas.yview)
 		self.canvas.configure(yscrollcommand=self.vsb.set)
@@ -74,23 +74,12 @@ class Application(tk.Frame):
 	# GUI has ENTRY for technician which calls the ec.validate_technician function
 	def member_input(self, f):
 		
-		self.member_input_label = tk.Label(f, text="Members: ")
-		# Add a grid
+		self.member_input = tk.Label(f, text="Enter your full name: ")
+		self.member_entry = tk.Entry(f, width=30)
 
-		options = {
-		'Preston Wong',
-		'Ken Le',
-		'Hanli Su'
-		}
-
-		self.variable = StringVar()
-		self.variable.set("Preston Wong")
-		self.menu = OptionMenu(f, self.variable, *options, command = self.func)
-		
-		self.menu.grid(row = 1, column = 12)
-
-		self.member_input_label.grid(row=1, column=8, columnspan=3, padx=(150, 5), pady=5)
-		self.func(self.variable)
+		self.member_input.grid(row=1, column=2, columnspan=3, padx=(150, 5), pady=5)
+		self.member_entry.grid(row=2, column=2, columnspan=6, padx=(150, 5), pady=5)
+		# self.func(self.variable)
 		# self.technician_input_entry.grid(row=0, column=11, columnspan=3, padx=5, pady=5)	
 
 	def func(self, value):
@@ -102,8 +91,8 @@ class Application(tk.Frame):
 	def autofill_today_in_date(self, f):
 		self.autofill_today_label = tk.Label(f, text="Today's Date: ")
 		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"))
-		self.autofill_today_label.grid(row=3, column=8, columnspan=3, padx=(150, 5), pady=5)
-		self.autofill_today_date.grid(row=3, column=11, columnspan=3, padx=5, pady=5)
+		self.autofill_today_label.grid(row=3, column=2, columnspan=3, padx=(150, 5), pady=5)
+		self.autofill_today_date.grid(row=3, column=5, columnspan=3, padx=5, pady=5)
 
 	# def make_separator_at_row(self, r):
 	# 	ttk.Separator(self.mainframe ,orient=tk.HORIZONTAL).grid(row=r, column=0, columnspan=14, sticky='ew', pady=20)
@@ -124,21 +113,23 @@ class Application(tk.Frame):
 		root = tk.Tk()
 		# root.iconbitmap(resource_path('img/icon.ico'))
 		w, h = root.winfo_screenwidth(), root.winfo_screenheight()
-		root.geometry("{}x{}+0+0".format(500, 380))
+		root.geometry("{}x{}+0+0".format(1000, 1000))
 		root.wm_title("CSULB Table Tennis & Badminton")
 		mainframe = tk.Frame(master=root, background = "#9BE7FF")
 		mainframe.pack(side="top", fill="both", expand=True)
 
-		helv36 = tkFont.Font(family='Helvetica', size=36, weight='bold')
+		helv36 = tkFont.Font(family='century gothic', size=36, weight='normal')
+
+		title = tk.Label(mainframe, text = "CSULB Table Tennis & Badminton Software", font = helv36)
+		title.place(relx = 0.5, rely = 0.1, anchor = 'center')
 		
-		signIn = tk.Button(mainframe, text="Sign In", padx='10', pady='10', font = helv36, borderwidth='5' , background = "#FF4435")
+		signIn = tk.Button(mainframe, text="Sign In", padx='20', pady='20', font = helv36, borderwidth='5' , background = "#ff5c33")
 		signIn["command"] = lambda: self.start_this_program(True, root)
-		signIn.pack(side="top")
+		signIn.place(relx = 0.5, rely = 0.3, anchor = 'center')
 
-		register = tk.Button(mainframe, text="Register", padx='10', pady='10', font = helv36, borderwidth='5', background = "#005EC4")
+		register = tk.Button(mainframe, text="Register", padx='20', pady='20', font = helv36, borderwidth='5', background = "#80b3ff")
 		register["command"] = lambda: self.start_this_program(False, root)
-		register.pack(side='top')
-
+		register.place(relx = 0.5, rely = 0.5, anchor = 'center')
 
 	#USED FOR BACK BUTTON in main_menu
 	def start_this_program(self, true_if_signin, parent):
@@ -150,15 +141,12 @@ class Application(tk.Frame):
 	# Called by the run button
 	# Makes various calls to functions in error_check.py
 	def run_logic(self):
-		self.p = PromptPopup("Final Confirmation",
-			"Push to Asana and Google Sheets?",
-			[
-			["YES PROCEED", lambda: self.api_hooks(self.p)],
-			["NO CANCEL", lambda: self.dummy(self.p)],
-			]
-			)
-		self.wait_window(self.p)
+		self.p = lambda: self.make_log(self.p)
 			
+	
+	def api_hooks(self, top):
+		top.destroy()
+
 	def dummy(self, top):
 		print("Dummy function")
 		top.destroy()
@@ -168,20 +156,18 @@ class Application(tk.Frame):
 		p.destroy()
 
 
-	# def make_log(self, top):
-	# 	# Also uses automatic_inventory from pack_data function
-	# 	self.finish_status()
-	# 	self.automatic_program_log = [[
-	# 		"SUCCESS", 
-	# 		str(datetime.datetime.now()), 
-	# 		str(self.NUM_HDDS), 
-	# 		self.technician, 
-	# 		str(round(time.time() - self.start_time, 2)), 
-	# 		str(ec.num_errors)
-	# 	]]
-	# 	print("Time is ",str(round(time.time() - self.start_time, 2)))
-	# 	#Now I'm going to call this
-	# 	gslog.main(top, self.automatic_inventory, self.automatic_program_log)
+	def make_log(self, top):
+		# self.automatic_program_log = [[
+		# 	"SUCCESS", 
+		# 	str(datetime.datetime.now()), 
+		# 	str(self.NUM_HDDS), 
+		# 	self.technician, 
+		# 	str(round(time.time() - self.start_time, 2)), 
+		# 	str(ec.num_errors)
+		# ]]
+		print("Time is ",str(round(time.time() - self.start_time, 2)))
+		#Now I'm going to call this
+		gslog.main()
 
 
 ## Below three custom popup classes to call

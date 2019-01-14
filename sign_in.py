@@ -11,6 +11,7 @@ import os
 import register
 from tkinter import *
 
+#MEIPASS is used for PyInstaller, used for creating an exec
 def resource_path(relative_path):
   try:
     base_path = sys._MEIPASS
@@ -29,7 +30,7 @@ class Application(tk.Frame):
 		self.master = master
 
 		super().__init__(master)
-		self.canvas = tk.Canvas(master, borderwidth=0, background="#FF4435")
+		self.canvas = tk.Canvas(master, borderwidth=0, background="#9BE7FF")
 		self.mainframe = tk.Frame(self.canvas, background="#ffffff")
 		self.vsb = tk.Scrollbar(master, orient="vertical", command=self.canvas.yview)
 		self.canvas.configure(yscrollcommand=self.vsb.set)
@@ -57,11 +58,13 @@ class Application(tk.Frame):
 
 		# self.embed_logo(mainframe)
 		# rows 0-2, cols 10-14 size 1x3
+		# self.make_separator_at_row(4)
 		self.autofill_today_in_date(mainframe)
 		self.member_input(mainframe)
 		self.back_button(mainframe)
 		self.sign_in_button(mainframe)
-		# self.make_separator_at_row(4)
+		# self.paid(mainframe)
+		# self.unpaid(mainframe)
 		self.start_time = time.time()
 
 	# # Adding a personal touch
@@ -74,8 +77,8 @@ class Application(tk.Frame):
 	# GUI has ENTRY for technician which calls the ec.validate_technician function
 	def member_input(self, f):
 		
-		self.member_input_label = tk.Label(f, text="Members: ")
-		self.member_input_label.grid(row=3, column=1, columnspan=3, padx=(150, 5), pady=5)
+		self.member_input_label = tk.Label(f, text="Select your name: ")
+		self.member_input_label.grid(row=3, column=0, columnspan=3, padx=(150, 5), pady=5)
 
 		options = {
 		'Preston Wong', 'Matthew Rahe',
@@ -91,28 +94,27 @@ class Application(tk.Frame):
 		'Andy Chan','Ben Lou','Peter Kim',
 		'Amanda Kim','Ethan Levine','Caryn Hoang',
 		'Jalon Flores','Richard Le','Patrick Pham',
-		'Joseph Kim'
+		'Joseph Kim', 'Shanni Chen', 'Leanne Deng', 'Tristan Nguyen',
+		'Joey Tran', 'Anthony Au Yeung'
 		}
 		options = sorted(options)
 		self.variable = StringVar()
-		self.variable.set("Click Name Here")
+		self.variable.set("Click AND Hold")
 		self.menu = OptionMenu(f, self.variable, *options, command = self.func)
-		
 		self.menu.grid(row = 4, column = 1)
-		self.func(self.variable)
-		# self.technician_input_entry.grid(row=0, column=11, columnspan=3, padx=5, pady=5)	
+		self.func(self.variable) # Get member variable that is selected by user
+
 
 	def func(self, value):
 		self.member_input_entry = self.variable.get()
 		self.member = self.member_input_entry
-		print("tech entry", self.member_input_entry)
 
 	# GUI autofills today's date
 	def autofill_today_in_date(self, f):
 		self.autofill_today_label = tk.Label(f, text="Today's Date: ")
 		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"))
-		self.autofill_today_label.grid(row=1, column=1, columnspan=3, padx=(150, 5), pady=5)
-		self.autofill_today_date.grid(row=1, column=6, columnspan=3, padx=5, pady=5)
+		self.autofill_today_label.grid(row=1, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.autofill_today_date.grid(row=1, column=2, columnspan=3, padx=5, pady=5)
 
 	# def make_separator_at_row(self, r):
 	# 	ttk.Separator(self.mainframe ,orient=tk.HORIZONTAL).grid(row=r, column=0, columnspan=14, sticky='ew', pady=20)
@@ -122,31 +124,29 @@ class Application(tk.Frame):
 		self.back_button = tk.Radiobutton(f, text="Back", indicatoron=0, value="Back", padx = 50, command = lambda : self.main_menu(f))
 		self.back_button.grid(row=0, column=0)
 
-	def sign_in_button(self, f):
-		self.sign_in_button = tk.Button(f, text="Sign In")
-		self.sign_in_button["command"] = lambda: self.run_logic()
-		self.sign_in_button.grid(row=8, column=2, columnspan=5, pady=(20, 20), sticky='ew')
-
 	#Called from ONLY the back button
 	def main_menu(self, master):
 		self.master.destroy()
 		root = tk.Tk()
 		# root.iconbitmap(resource_path('img/icon.ico'))
 		w, h = root.winfo_screenwidth(), root.winfo_screenheight()
-		root.geometry("{}x{}+0+0".format(500, 380))
+		root.geometry("{}x{}+0+0".format(1000, 1000))
 		root.wm_title("CSULB Table Tennis & Badminton")
 		mainframe = tk.Frame(master=root, background = "#9BE7FF")
 		mainframe.pack(side="top", fill="both", expand=True)
 
-		helv36 = tkFont.Font(family='Helvetica', size=36, weight='bold')
-		
-		signIn = tk.Button(mainframe, text="Sign In", padx='10', pady='10', font = helv36, borderwidth='5' , background = "#FF4435")
-		signIn["command"] = lambda: self.start_this_program(True, root)
-		signIn.pack(side="top")
+		helv36 = tkFont.Font(family='century gothic', size=36, weight='normal')
 
-		register = tk.Button(mainframe, text="Register", padx='10', pady='10', font = helv36, borderwidth='5', background = "#005EC4")
+		title = tk.Label(mainframe, text = "CSULB Table Tennis & Badminton Software", font = helv36)
+		title.place(relx = 0.5, rely = 0.1, anchor = 'center')
+		
+		signIn = tk.Button(mainframe, text="Sign In", padx='20', pady='20', font = helv36, borderwidth='5' , background = "#ff5c33")
+		signIn["command"] = lambda: self.start_this_program(True, root)
+		signIn.place(relx = 0.5, rely = 0.3, anchor = 'center')
+
+		register = tk.Button(mainframe, text="Register", padx='20', pady='20', font = helv36, borderwidth='5', background = "#80b3ff")
 		register["command"] = lambda: self.start_this_program(False, root)
-		register.pack(side='top')
+		register.place(relx = 0.5, rely = 0.5, anchor = 'center')
 
 	#USED FOR BACK BUTTON in main_menu
 	def start_this_program(self, true_if_signin, parent):
@@ -154,15 +154,41 @@ class Application(tk.Frame):
 			run_gui(parent)
 		else:
 			register.run_gui(parent)
-	
-	# Called by the run button
-	# Makes various calls to functions in error_check.py
-	def run_logic(self):
-		lambda: self.after_run(self.p)
-	
-	def after_run(self, top):			
-		self.status_bar_label["text"] = "Paid/Unpaid"
-		self.status_bar_label.grid(row=8, column=2, columnspan=5, pady=(20, 20))
+
+	#f is needed for GUI
+	def sign_in_button(self, f):
+		self.sign_in_button = tk.Button(f, text="Sign In")
+		self.sign_in_button["command"] = lambda: self.run_logic(f)
+		self.sign_in_button.grid(row=8, column=0, columnspan=5, pady=(20, 20), sticky='ew')
+		
+
+	# Called by the sign in button
+	def run_logic(self, f):
+		# print(self.member)
+		try:
+			self.paid_label.grid_forget()
+		except:
+			print("No paid label")
+		try:
+			self.unpaid_label.grid_forget()
+		except:
+			print("No paid label")
+		paidStatus = gslog.main(self.member)
+		# print("paidstatus", paidStatus)
+		if (paidStatus == "PAID"):
+			self.paid(f)
+			gslog.sign_in(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
+		else:
+			self.unpaid(f)
+
+	def paid(self, f):
+		self.paid_label = tk.Label(f, text= "PAID", bg="lightgreen")
+		self.paid_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
+
+
+	def unpaid(self, f):
+		self.unpaid_label = tk.Label(f, text= "UNPAID", bg="red")
+		self.unpaid_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
 
 	def dummy(self, top):
 		print("Dummy function")
@@ -213,7 +239,7 @@ def run_gui(parent):
 	# root.iconbitmap(resource_path('img/icon.ico'))
 	w, h = root.winfo_screenwidth(), root.winfo_screenheight()
 	#root.geometry("{}x{}+0+0".format(w, h))
-	root.geometry("{}x{}+0+0".format(850, h-500))
+	root.geometry("{}x{}+0+0".format(1000, 1000))
 	root.wm_title("Sign In")
 	app = Application(master=root)
 	app.pack(side="top", fill="both", expand=True)
