@@ -13,13 +13,16 @@ def resource_path(relative_path):
 
 import sign_in as si
 import register as re
+import oneday as od
 
-def start_this_program(true_if_signin, parent):
+def start_this_program(true_if_signin, true_if_register, parent):
 	pass
 	if true_if_signin:
 		si.run_gui(parent)
-	else:
+	elif true_if_register:
 		re.run_gui(parent)
+	else:
+		od.run_gui(parent)
 
 
 if __name__ == "__main__":
@@ -40,13 +43,16 @@ if __name__ == "__main__":
 	title.place(relx = 0.5, rely = 0.1, anchor = 'center')
 	
 	signIn = tk.Button(mainframe, text="Sign In", padx='20', pady='20', font = helv36, borderwidth='5' , background = "#ff5c33")
-	signIn["command"] = lambda: start_this_program(True, root)
+	signIn["command"] = lambda: start_this_program(True, False, root)
 	signIn.place(relx = 0.5, rely = 0.3, anchor = 'center')
 
 	register = tk.Button(mainframe, text="Register", padx='20', pady='20', font = helv36, borderwidth='5', background = "#80b3ff")
-	register["command"] = lambda: start_this_program(False, root)
+	register["command"] = lambda: start_this_program(False, True, root)
 	register.place(relx = 0.5, rely = 0.5, anchor = 'center')
 
+	oneday = tk.Button(mainframe, text="$2 One Day Pass", padx='20', pady='20', font = helv36, borderwidth='5', background = "#80ff80")
+	oneday["command"] = lambda: start_this_program(False, False, root)
+	oneday.place(relx = 0.5, rely = 0.7, anchor = 'center')
 	#the_image = tk.PhotoImage(file=resource_path('img/cerebot.gif'))
 	#banner = tk.Label(image=the_image)
 	#banner.pack(side="top")

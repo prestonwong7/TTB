@@ -9,6 +9,7 @@ import tkinter.font as tkFont
 
 import os
 import sign_in as si
+import oneday as od
 from tkinter import *
 
 def resource_path(relative_path):
@@ -79,13 +80,14 @@ class Application(tk.Frame):
 
 		self.member_input.grid(row=1, column=2, columnspan=3, padx=(150, 5), pady=5)
 		self.member_entry.grid(row=2, column=2, columnspan=6, padx=(150, 5), pady=5)
-		# self.func(self.variable)
+		self.member = self.member_entry.get()
+		print(self.member)
 		# self.technician_input_entry.grid(row=0, column=11, columnspan=3, padx=5, pady=5)	
 
-	def func(self, value):
-		self.member_input_entry = self.variable.get()
-		self.member = self.member_input_entry
-		print("tech entry", self.member_input_entry)
+	# def func(self, value):
+	# 	self.member_input_entry = self.variable.get()
+	# 	self.member = self.member_input_entry
+	# 	print("tech entry", self.member_input_entry)
 
 	# GUI autofills today's date
 	def autofill_today_in_date(self, f):
@@ -104,7 +106,7 @@ class Application(tk.Frame):
 
 	def register_button(self, f):
 		self.register_button = tk.Button(f, text="Register")
-		self.register_button["command"] = lambda: self.run_logic()
+		self.register_button["command"] = lambda: self.run_logic(f)
 		self.register_button.grid(row=8, column=2, columnspan=5, pady=(20, 20), sticky='ew')
 
 	#Caleed from ONLY the back button
@@ -124,28 +126,40 @@ class Application(tk.Frame):
 		title.place(relx = 0.5, rely = 0.1, anchor = 'center')
 		
 		signIn = tk.Button(mainframe, text="Sign In", padx='20', pady='20', font = helv36, borderwidth='5' , background = "#ff5c33")
-		signIn["command"] = lambda: self.start_this_program(True, root)
+		signIn["command"] = lambda: self.start_this_program(True, False, root)
 		signIn.place(relx = 0.5, rely = 0.3, anchor = 'center')
 
 		register = tk.Button(mainframe, text="Register", padx='20', pady='20', font = helv36, borderwidth='5', background = "#80b3ff")
-		register["command"] = lambda: self.start_this_program(False, root)
+		register["command"] = lambda: self.start_this_program(False, True, root)
 		register.place(relx = 0.5, rely = 0.5, anchor = 'center')
 
+		oneday = tk.Button(mainframe, text="One Day", padx='20', pady='20', font = helv36, borderwidth='5', background = "#80ff80")
+		oneday["command"] = lambda: self.start_this_program(False, False, root)
+		oneday.place(relx = 0.5, rely = 0.7, anchor = 'center')
+
 	#USED FOR BACK BUTTON in main_menu
-	def start_this_program(self, true_if_signin, parent):
+	def start_this_program(self, true_if_signin, true_if_register, parent):
 		if true_if_signin:
 			si.run_gui(parent)
-		else:
+		elif true_if_register:
 			run_gui(parent)
+		else:
+			od.run_gui(parent)
 	
 	# Called by the run button
 	# Makes various calls to functions in error_check.py
-	def run_logic(self):
-		self.p = lambda: self.make_log(self.p)
-			
-	
-	def api_hooks(self, top):
-		top.destroy()
+	def run_logic(self, f):
+		# print(self.member)
+		try:
+			self.register_label.grid_forget()
+		except:
+			print("No register label")
+		self.register(f)
+		gslog.register(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
+
+	def register(self, f):
+		self.register_label = tk.Label(f, text= "Thanks for registering for the CSULB Table Tennis & Badminton Club", bg="orange", width = 30)
+		self.register_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
 
 	def dummy(self, top):
 		print("Dummy function")

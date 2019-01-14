@@ -8,8 +8,8 @@ import tkinter.font as tkFont
 # from asana_automate import main
 
 import os
+import sign_in as si
 import register
-import oneday as od
 from tkinter import *
 
 #MEIPASS is used for PyInstaller, used for creating an exec
@@ -37,9 +37,9 @@ class Application(tk.Frame):
 		self.canvas.configure(yscrollcommand=self.vsb.set)
 
 		self.vsb.pack(side="right", fill="y")
-		self.canvas.pack(side="left", fill="both", expand=True)
+		self.canvas.pack(side="top", fill="both", expand=True)
 		self.canvas.create_window((4,4), window=self.mainframe, anchor="ne", 
-									tags="self.mainframe", width = 500, height = 500)
+									tags="self.mainframe", width = 900, height = 900)
 
 		self.mainframe.bind("<Configure>", self.onFrameConfigure)
 
@@ -63,7 +63,7 @@ class Application(tk.Frame):
 		self.autofill_today_in_date(mainframe)
 		self.member_input(mainframe)
 		self.back_button(mainframe)
-		self.sign_in_button(mainframe)
+		self.oneDayButton(mainframe)
 		# self.paid(mainframe)
 		# self.unpaid(mainframe)
 		self.start_time = time.time()
@@ -78,32 +78,15 @@ class Application(tk.Frame):
 	# GUI has ENTRY for technician which calls the ec.validate_technician function
 	def member_input(self, f):
 		
-		self.member_input_label = tk.Label(f, text="Select your name: ")
-		self.member_input_label.grid(row=3, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.header = tk.Label(f, text="$2 One Day Pass")
+		self.member_input = tk.Label(f, text="Enter your full name: ")
+		self.member_entry = tk.Entry(f, width=30)
 
-		options = {
-		'Preston Wong', 'Matthew Rahe',
-		'Ken Le','Vincent Le',
-		'Danny Nguyen','Richard Son','Jocelyn Som',
-		'Daniel Pham','Hikaru Takasugi','Christian Reyes',
-		'Diana Wong','Max Rassavong','Jeffrey Kesuma',
-		'Jose Salazar','Alexandra Kirkendall','Ngan Ta',
-		'Adalina Vu', 'Andy Nguyen', 'Joyce Nguyen',
-		'An Nguyen','Steve Fang', 'Christopher Imantaka',
-		'Julian Lam', 'Dina Bui', 'Larakaye Villanueva',
-		'Christian Wu',	'Alan Xazer','Nathan Mora',
-		'Andy Chan','Ben Lou','Peter Kim',
-		'Amanda Kim','Ethan Levine','Caryn Hoang',
-		'Jalon Flores','Richard Le','Patrick Pham',
-		'Joseph Kim', 'Shanni Chen', 'Leanne Deng', 'Tristan Nguyen',
-		'Joey Tran', 'Anthony Au Yeung'
-		}
-		options = sorted(options)
-		self.variable = StringVar()
-		self.variable.set("Click AND Hold")
-		self.menu = OptionMenu(f, self.variable, *options, command = self.func)
-		self.menu.grid(row = 4, column = 1)
-		self.func(self.variable) # Get member variable that is selected by user
+		self.header.grid(row=1, column=2, columnspan=3, padx=(150, 5), pady=5)
+		self.member_input.grid(row=2, column=2, columnspan=3, padx=(150, 5), pady=5)
+		self.member_entry.grid(row=3, column=2, columnspan=6, padx=(150, 5), pady=5)
+		# self.func(self.variable)
+		# self.technician_input_entry.grid(row=0, column=11, columnspan=3, padx=5, pady=5)	
 
 
 	def func(self, value):
@@ -114,8 +97,8 @@ class Application(tk.Frame):
 	def autofill_today_in_date(self, f):
 		self.autofill_today_label = tk.Label(f, text="Today's Date: ")
 		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"))
-		self.autofill_today_label.grid(row=1, column=0, columnspan=3, padx=(150, 5), pady=5)
-		self.autofill_today_date.grid(row=1, column=2, columnspan=3, padx=5, pady=5)
+		self.autofill_today_label.grid(row=4, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.autofill_today_date.grid(row=4, column=2, columnspan=3, padx=5, pady=5)
 
 	# def make_separator_at_row(self, r):
 	# 	ttk.Separator(self.mainframe ,orient=tk.HORIZONTAL).grid(row=r, column=0, columnspan=14, sticky='ew', pady=20)
@@ -156,17 +139,17 @@ class Application(tk.Frame):
 	#USED FOR BACK BUTTON in main_menu
 	def start_this_program(self, true_if_signin, true_if_register, parent):
 		if true_if_signin:
-			run_gui(parent)
+			si.run_gui(parent)
 		elif true_if_register:
 			register.run_gui(parent)
 		else:
-			od.run_gui(parent)
+			run_gui(parent)
 
 	#f is needed for GUI
-	def sign_in_button(self, f):
-		self.sign_in_button = tk.Button(f, text="Sign In")
-		self.sign_in_button["command"] = lambda: self.run_logic(f)
-		self.sign_in_button.grid(row=8, column=0, columnspan=5, pady=(20, 20), sticky='ew')
+	def oneDayButton(self, f):
+		self.oneDayButton = tk.Button(f, text="Get One Day Pass")
+		self.oneDayButton["command"] = lambda: self.run_logic(f)
+		self.oneDayButton.grid(row=8, column=0, columnspan=5, pady=(20, 20), sticky='ew')
 		
 
 	# Called by the sign in button
@@ -176,27 +159,13 @@ class Application(tk.Frame):
 			self.paid_label.grid_forget()
 		except:
 			print("No paid label")
-		try:
-			self.unpaid_label.grid_forget()
-		except:
-			print("No paid label")
-		paidStatus = gslog.main(self.member)
-		# print("paidstatus", paidStatus)
-		if (paidStatus == "PAID"):
-			self.paid(f)
-			gslog.sign_in(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
-		else:
-			self.unpaid(f)
-			gslog.sign_in(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
+		self.paid(f)
+		gslog.one_day(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
 
 	def paid(self, f):
-		self.paid_label = tk.Label(f, text= "PAID", bg="lightgreen", width = 5)
+		self.paid_label = tk.Label(f, text= "Please pay the President/Treasurer $2", bg="orange", width = 5)
 		self.paid_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
 
-
-	def unpaid(self, f):
-		self.unpaid_label = tk.Label(f, text= "UNPAID", bg="red", width =16, height = 5)
-		self.unpaid_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
 
 	def dummy(self, top):
 		print("Dummy function")
@@ -248,7 +217,7 @@ def run_gui(parent):
 	w, h = root.winfo_screenwidth(), root.winfo_screenheight()
 	#root.geometry("{}x{}+0+0".format(w, h))
 	root.geometry("{}x{}+0+0".format(1000, 1000))
-	root.wm_title("Sign In")
+	root.wm_title("One Day")
 	app = Application(master=root)
 	app.pack(side="top", fill="both", expand=True)
 	app.mainloop()

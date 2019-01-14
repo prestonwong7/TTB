@@ -22,6 +22,13 @@ def sign_in(name, date):
     gsheet = gc.open('MemberSignIn').sheet1
     gsheet.append_row([name, 'Sign In', date])
 
+def register(name, date):
+    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret_sheet.json', scope)
+    gc = gspread.authorize(credentials)
+    gsheet = gc.open('MemberSignIn').sheet1
+    gsheet.append_row([name, 'Register', date])
+
 def one_day(name, date):
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
     credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret_sheet.json', scope)
