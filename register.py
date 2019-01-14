@@ -80,14 +80,6 @@ class Application(tk.Frame):
 
 		self.member_input.grid(row=1, column=2, columnspan=3, padx=(150, 5), pady=5)
 		self.member_entry.grid(row=2, column=2, columnspan=6, padx=(150, 5), pady=5)
-		self.member = self.member_entry.get()
-		print(self.member)
-		# self.technician_input_entry.grid(row=0, column=11, columnspan=3, padx=5, pady=5)	
-
-	# def func(self, value):
-	# 	self.member_input_entry = self.variable.get()
-	# 	self.member = self.member_input_entry
-	# 	print("tech entry", self.member_input_entry)
 
 	# GUI autofills today's date
 	def autofill_today_in_date(self, f):
@@ -150,6 +142,7 @@ class Application(tk.Frame):
 	# Makes various calls to functions in error_check.py
 	def run_logic(self, f):
 		# print(self.member)
+		self.member = self.member_entry.get()
 		try:
 			self.register_label.grid_forget()
 		except:
@@ -158,7 +151,7 @@ class Application(tk.Frame):
 		gslog.register(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
 
 	def register(self, f):
-		self.register_label = tk.Label(f, text= "Thanks for registering for the CSULB Table Tennis & Badminton Club", bg="orange", width = 30)
+		self.register_label = tk.Label(f, text= "Thanks for registering for the CSULB Table Tennis & Badminton Club", bg="orange", width = 55)
 		self.register_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
 
 	def dummy(self, top):

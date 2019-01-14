@@ -85,13 +85,6 @@ class Application(tk.Frame):
 		self.header.grid(row=1, column=2, columnspan=3, padx=(150, 5), pady=5)
 		self.member_input.grid(row=2, column=2, columnspan=3, padx=(150, 5), pady=5)
 		self.member_entry.grid(row=3, column=2, columnspan=6, padx=(150, 5), pady=5)
-		# self.func(self.variable)
-		# self.technician_input_entry.grid(row=0, column=11, columnspan=3, padx=5, pady=5)	
-
-
-	def func(self, value):
-		self.member_input_entry = self.variable.get()
-		self.member = self.member_input_entry
 
 	# GUI autofills today's date
 	def autofill_today_in_date(self, f):
@@ -155,6 +148,7 @@ class Application(tk.Frame):
 	# Called by the sign in button
 	def run_logic(self, f):
 		# print(self.member)
+		self.member = self.member_entry.get()
 		try:
 			self.paid_label.grid_forget()
 		except:
@@ -163,7 +157,7 @@ class Application(tk.Frame):
 		gslog.one_day(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
 
 	def paid(self, f):
-		self.paid_label = tk.Label(f, text= "Please pay the President/Treasurer $2", bg="orange", width = 5)
+		self.paid_label = tk.Label(f, text= "Please pay the President/Treasurer $2", bg="orange", width = 30)
 		self.paid_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
 
 
