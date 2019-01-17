@@ -31,7 +31,7 @@ class Application(tk.Frame):
 		self.master = master
 
 		super().__init__(master)
-		self.canvas = tk.Canvas(master, borderwidth=0, background="#9BE7FF")
+		self.canvas = tk.Canvas(master, borderwidth=10, background="#9BE7FF")
 		self.mainframe = tk.Frame(self.canvas, background="#ffffff")
 		self.vsb = tk.Scrollbar(master, orient="vertical", command=self.canvas.yview)
 		self.canvas.configure(yscrollcommand=self.vsb.set)
@@ -60,9 +60,10 @@ class Application(tk.Frame):
 		# self.embed_logo(mainframe)
 		# rows 0-2, cols 10-14 size 1x3
 		# self.make_separator_at_row(4)
+		self.back_button(mainframe)
+		self.header(mainframe)
 		self.autofill_today_in_date(mainframe)
 		self.member_input(mainframe)
-		self.back_button(mainframe)
 		self.sign_in_button(mainframe)
 		# self.paid(mainframe)
 		# self.unpaid(mainframe)
@@ -74,12 +75,17 @@ class Application(tk.Frame):
 	# 	self.logo_label = tk.Label(f, image=self.logo)
 	# 	self.logo_label.grid(row=0, column=7, rowspan=3, columnspan=3)
 
+	def header(self, f):
+		helv36 = tkFont.Font(family='centurygothic', size=72, weight='normal')
+		self.header = tk.Label(f, text="SIGN IN", font = helv36, background = 'red')
+		self.header.grid(row=1, column=0, columnspan=3, padx=(150, 5), pady=5)
+		# self.header.pack(side="top")
 
 	# GUI has ENTRY for technician which calls the ec.validate_technician function
 	def member_input(self, f):
-		
+
 		self.member_input_label = tk.Label(f, text="Select your name: ")
-		self.member_input_label.grid(row=3, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.member_input_label.grid(row=4, column=0, columnspan=3, padx=(150, 5), pady=5)
 
 		options = {
 		'Preston Wong', 'Matthew Rahe',
@@ -102,7 +108,7 @@ class Application(tk.Frame):
 		self.variable = StringVar()
 		self.variable.set("Click AND Hold")
 		self.menu = OptionMenu(f, self.variable, *options, command = self.func)
-		self.menu.grid(row = 4, column = 1)
+		self.menu.grid(row = 5, column = 1)
 		self.func(self.variable) # Get member variable that is selected by user
 
 
@@ -114,8 +120,8 @@ class Application(tk.Frame):
 	def autofill_today_in_date(self, f):
 		self.autofill_today_label = tk.Label(f, text="Today's Date: ")
 		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"))
-		self.autofill_today_label.grid(row=1, column=0, columnspan=3, padx=(150, 5), pady=5)
-		self.autofill_today_date.grid(row=1, column=2, columnspan=3, padx=5, pady=5)
+		self.autofill_today_label.grid(row=2, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.autofill_today_date.grid(row=2, column=2, columnspan=3, padx=5, pady=5)
 
 	# def make_separator_at_row(self, r):
 	# 	ttk.Separator(self.mainframe ,orient=tk.HORIZONTAL).grid(row=r, column=0, columnspan=14, sticky='ew', pady=20)
@@ -166,7 +172,7 @@ class Application(tk.Frame):
 	def sign_in_button(self, f):
 		self.sign_in_button = tk.Button(f, text="Sign In")
 		self.sign_in_button["command"] = lambda: self.run_logic(f)
-		self.sign_in_button.grid(row=8, column=0, columnspan=5, pady=(20, 20), sticky='ew')
+		self.sign_in_button.grid(row=8, column=0, columnspan=2, pady=(20, 20), sticky='ew')
 		
 
 	# Called by the sign in button
@@ -190,13 +196,13 @@ class Application(tk.Frame):
 			gslog.sign_in(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
 
 	def paid(self, f):
-		self.paid_label = tk.Label(f, text= "PAID", bg="lightgreen", width = 5)
-		self.paid_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
+		self.paid_label = tk.Label(f, text= "PAID", bg="lightgreen", width = 20, height = 4)
+		self.paid_label.grid(row=10, column=0, columnspan=1)
 
 
 	def unpaid(self, f):
-		self.unpaid_label = tk.Label(f, text= "UNPAID", bg="red", width =16, height = 5)
-		self.unpaid_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
+		self.unpaid_label = tk.Label(f, text= "UNPAID", bg="red", width =20, height = 4)
+		self.unpaid_label.grid(row=10, column=0, padx= 10, pady=5)
 
 	def dummy(self, top):
 		print("Dummy function")
@@ -247,7 +253,7 @@ def run_gui(parent):
 	# root.iconbitmap(resource_path('img/icon.ico'))
 	w, h = root.winfo_screenwidth(), root.winfo_screenheight()
 	#root.geometry("{}x{}+0+0".format(w, h))
-	root.geometry("{}x{}+0+0".format(1000, 1000))
+	root.geometry("{}x{}+0+0".format(550, 540))
 	root.wm_title("Sign In")
 	app = Application(master=root)
 	app.pack(side="top", fill="both", expand=True)

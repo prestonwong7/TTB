@@ -30,14 +30,14 @@ class Application(tk.Frame):
 		self.master = master
 
 		super().__init__(master)
-		self.canvas = tk.Canvas(master, borderwidth=0, background="#9BE7FF")
-		self.mainframe = tk.Frame(self.canvas, background="#ffffff")
+		self.canvas = tk.Canvas(master, borderwidth=10, background="#9BE7FF", width = 400, height = 400)
+		self.mainframe = tk.Frame(self.canvas, background="#ffffff", width = 400, height = 400)
 		self.vsb = tk.Scrollbar(master, orient="vertical", command=self.canvas.yview)
 		self.canvas.configure(yscrollcommand=self.vsb.set)
 
 		self.vsb.pack(side="right", fill="y")
 		self.canvas.pack(side="left", fill="both", expand=True)
-		self.canvas.create_window((4,4), window=self.mainframe, anchor="ne", 
+		self.canvas.create_window((100,100), window=self.mainframe, anchor="ne", 
 									tags="self.mainframe")
 
 		self.mainframe.bind("<Configure>", self.onFrameConfigure)
@@ -58,9 +58,10 @@ class Application(tk.Frame):
 
 		# self.embed_logo(mainframe)
 		# rows 0-2, cols 10-14 size 1x3
+		self.back_button(mainframe)
+		self.header(mainframe)
 		self.autofill_today_in_date(mainframe)
 		self.member_input(mainframe)
-		self.back_button(mainframe)
 		self.register_button(mainframe)
 		# self.make_separator_at_row(4)
 		self.start_time = time.time()
@@ -71,6 +72,9 @@ class Application(tk.Frame):
 	# 	self.logo_label = tk.Label(f, image=self.logo)
 	# 	self.logo_label.grid(row=0, column=7, rowspan=3, columnspan=3)
 
+	def header(self, f):
+		self.header = tk.Label(f, text="REGISTER")
+		self.header.grid(row=1, column=0, columnspan=3, padx=(150, 5), pady=5)
 
 	# GUI has ENTRY for technician which calls the ec.validate_technician function
 	def member_input(self, f):
@@ -78,15 +82,15 @@ class Application(tk.Frame):
 		self.member_input = tk.Label(f, text="Enter your full name: ")
 		self.member_entry = tk.Entry(f, width=30)
 
-		self.member_input.grid(row=1, column=2, columnspan=3, padx=(150, 5), pady=5)
-		self.member_entry.grid(row=2, column=2, columnspan=6, padx=(150, 5), pady=5)
+		self.member_input.grid(row=3, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.member_entry.grid(row=4, column=0, columnspan=6, padx=(150, 5), pady=5)
 
 	# GUI autofills today's date
 	def autofill_today_in_date(self, f):
 		self.autofill_today_label = tk.Label(f, text="Today's Date: ")
 		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"))
-		self.autofill_today_label.grid(row=3, column=2, columnspan=3, padx=(150, 5), pady=5)
-		self.autofill_today_date.grid(row=3, column=5, columnspan=3, padx=5, pady=5)
+		self.autofill_today_label.grid(row=2, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.autofill_today_date.grid(row=2, column=3, columnspan=3, padx=5, pady=5)
 
 	# def make_separator_at_row(self, r):
 	# 	ttk.Separator(self.mainframe ,orient=tk.HORIZONTAL).grid(row=r, column=0, columnspan=14, sticky='ew', pady=20)
@@ -199,7 +203,7 @@ def run_gui(parent):
 	# root.iconbitmap(resource_path('img/icon.ico'))
 	w, h = root.winfo_screenwidth(), root.winfo_screenheight()
 	#root.geometry("{}x{}+0+0".format(w, h))
-	root.geometry("{}x{}+0+0".format(850, h-500))
+	root.geometry("{}x{}+0+0".format(550, 540))
 	root.wm_title("Register")
 	app = Application(master=root)
 	app.pack(side="top", fill="both", expand=True)

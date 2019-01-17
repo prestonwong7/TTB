@@ -31,15 +31,15 @@ class Application(tk.Frame):
 		self.master = master
 
 		super().__init__(master)
-		self.canvas = tk.Canvas(master, borderwidth=0, background="#9BE7FF")
+		self.canvas = tk.Canvas(master, borderwidth=10, background="#9BE7FF")
 		self.mainframe = tk.Frame(self.canvas, background="#ffffff")
 		self.vsb = tk.Scrollbar(master, orient="vertical", command=self.canvas.yview)
 		self.canvas.configure(yscrollcommand=self.vsb.set)
 
 		self.vsb.pack(side="right", fill="y")
-		self.canvas.pack(side="top", fill="both", expand=True)
-		self.canvas.create_window((4,4), window=self.mainframe, anchor="ne", 
-									tags="self.mainframe", width = 900, height = 900)
+		self.canvas.pack(side="left", fill="both", expand=True)
+		self.canvas.create_window((100,100), window=self.mainframe, anchor="nw", 
+									tags="self.mainframe", width = 500, height = 490)
 
 		self.mainframe.bind("<Configure>", self.onFrameConfigure)
 
@@ -60,9 +60,10 @@ class Application(tk.Frame):
 		# self.embed_logo(mainframe)
 		# rows 0-2, cols 10-14 size 1x3
 		# self.make_separator_at_row(4)
+		self.back_button(mainframe)
+		self.header(mainframe)
 		self.autofill_today_in_date(mainframe)
 		self.member_input(mainframe)
-		self.back_button(mainframe)
 		self.oneDayButton(mainframe)
 		# self.paid(mainframe)
 		# self.unpaid(mainframe)
@@ -74,32 +75,40 @@ class Application(tk.Frame):
 	# 	self.logo_label = tk.Label(f, image=self.logo)
 	# 	self.logo_label.grid(row=0, column=7, rowspan=3, columnspan=3)
 
+	#creates back button interface
+	def back_button(self,f):
+		self.back_button = tk.Radiobutton(f, text="Back", justify = LEFT, 
+			anchor= W, indicatoron=0, value="Back", padx = 30, command = lambda : self.main_menu(f))
+		# self.back_button.grid(row=0, column=0)
+		self.back_button.pack(side="top")
+
+	def header(self, f):
+		self.header = tk.Label(f, text="$2 One Day Pass", fg = 'black', bg = 'lightgreen', height = 3)
+		# self.header.grid(row=1, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.header.pack(side="top")
 
 	# GUI has ENTRY for technician which calls the ec.validate_technician function
 	def member_input(self, f):
 		
-		self.header = tk.Label(f, text="$2 One Day Pass")
-		self.member_input = tk.Label(f, text="Enter your full name: ")
+		self.member_input = tk.Label(f, text="Enter your full name: ", bg = "grey", fg= "white")
 		self.member_entry = tk.Entry(f, width=30)
 
-		self.header.grid(row=1, column=2, columnspan=3, padx=(150, 5), pady=5)
-		self.member_input.grid(row=2, column=2, columnspan=3, padx=(150, 5), pady=5)
-		self.member_entry.grid(row=3, column=2, columnspan=6, padx=(150, 5), pady=5)
+		# self.member_input.grid(row=3, column=0, columnspan=3, padx=(150, 5), pady=5)
+		# self.member_entry.grid(row=4, column=0, columnspan=6, padx=(150, 5), pady=5)
+		self.member_input.pack(side="top")
+		self.member_entry.pack(side="top")
 
 	# GUI autofills today's date
 	def autofill_today_in_date(self, f):
 		self.autofill_today_label = tk.Label(f, text="Today's Date: ")
 		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"))
-		self.autofill_today_label.grid(row=4, column=0, columnspan=3, padx=(150, 5), pady=5)
-		self.autofill_today_date.grid(row=4, column=2, columnspan=3, padx=5, pady=5)
+		# self.autofill_today_label.grid(row=2, column=0, columnspan=3, padx=(150, 5), pady=5)
+		# self.autofill_today_date.grid(row=2, column=2, columnspan=3, padx=5, pady=5)
+		self.autofill_today_label.pack(side="top")
+		self.autofill_today_date.pack(side="top")
 
 	# def make_separator_at_row(self, r):
 	# 	ttk.Separator(self.mainframe ,orient=tk.HORIZONTAL).grid(row=r, column=0, columnspan=14, sticky='ew', pady=20)
-
-	#creates back button interface
-	def back_button(self,f):
-		self.back_button = tk.Radiobutton(f, text="Back", indicatoron=0, value="Back", padx = 50, command = lambda : self.main_menu(f))
-		self.back_button.grid(row=0, column=0)
 
 	#Called from ONLY the back button
 	def main_menu(self, master):
@@ -142,7 +151,8 @@ class Application(tk.Frame):
 	def oneDayButton(self, f):
 		self.oneDayButton = tk.Button(f, text="Get One Day Pass")
 		self.oneDayButton["command"] = lambda: self.run_logic(f)
-		self.oneDayButton.grid(row=8, column=0, columnspan=5, pady=(20, 20), sticky='ew')
+		# self.oneDayButton.grid(row=8, column=0, columnspan=5, pady=(20, 20), sticky='ew')
+		self.oneDayButton.pack(side="top")
 		
 
 	# Called by the sign in button
@@ -158,7 +168,8 @@ class Application(tk.Frame):
 
 	def paid(self, f):
 		self.paid_label = tk.Label(f, text= "Please pay the President/Treasurer $2", bg="orange", width = 30)
-		self.paid_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
+		# self.paid_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
+		self.paid_label.pack(side = "bottom")
 
 
 	def dummy(self, top):
@@ -210,7 +221,7 @@ def run_gui(parent):
 	# root.iconbitmap(resource_path('img/icon.ico'))
 	w, h = root.winfo_screenwidth(), root.winfo_screenheight()
 	#root.geometry("{}x{}+0+0".format(w, h))
-	root.geometry("{}x{}+0+0".format(1000, 1000))
+	root.geometry("{}x{}+0+0".format(550, 540))
 	root.wm_title("One Day")
 	app = Application(master=root)
 	app.pack(side="top", fill="both", expand=True)
