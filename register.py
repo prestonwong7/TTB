@@ -30,14 +30,14 @@ class Application(tk.Frame):
 		self.master = master
 
 		super().__init__(master)
-		self.canvas = tk.Canvas(master, borderwidth=10, background="#9BE7FF", width = 400, height = 400)
-		self.mainframe = tk.Frame(self.canvas, background="#ffffff", width = 400, height = 400)
+		self.canvas = tk.Canvas(master, borderwidth=10, background="#9BE7FF")
+		self.mainframe = tk.Frame(self.canvas, background="#ffffff")
 		self.vsb = tk.Scrollbar(master, orient="vertical", command=self.canvas.yview)
 		self.canvas.configure(yscrollcommand=self.vsb.set)
 
 		self.vsb.pack(side="right", fill="y")
 		self.canvas.pack(side="left", fill="both", expand=True)
-		self.canvas.create_window((100,100), window=self.mainframe, anchor="ne", 
+		self.canvas.create_window((100,100), window=self.mainframe, anchor="nw", 
 									tags="self.mainframe")
 
 		self.mainframe.bind("<Configure>", self.onFrameConfigure)
@@ -59,9 +59,14 @@ class Application(tk.Frame):
 		# self.embed_logo(mainframe)
 		# rows 0-2, cols 10-14 size 1x3
 		self.back_button(mainframe)
+		self.make_separator_at_row()
 		self.header(mainframe)
+		self.make_separator_at_row()
 		self.autofill_today_in_date(mainframe)
+		self.make_separator_at_row()
 		self.member_input(mainframe)
+		self.make_separator_at_row()
+		self.make_separator_at_row()
 		self.register_button(mainframe)
 		# self.make_separator_at_row(4)
 		self.start_time = time.time()
@@ -72,38 +77,49 @@ class Application(tk.Frame):
 	# 	self.logo_label = tk.Label(f, image=self.logo)
 	# 	self.logo_label.grid(row=0, column=7, rowspan=3, columnspan=3)
 
-	def header(self, f):
-		self.header = tk.Label(f, text="REGISTER")
-		self.header.grid(row=1, column=0, columnspan=3, padx=(150, 5), pady=5)
-
-	# GUI has ENTRY for technician which calls the ec.validate_technician function
-	def member_input(self, f):
-		
-		self.member_input = tk.Label(f, text="Enter your full name: ")
-		self.member_entry = tk.Entry(f, width=30)
-
-		self.member_input.grid(row=3, column=0, columnspan=3, padx=(150, 5), pady=5)
-		self.member_entry.grid(row=4, column=0, columnspan=6, padx=(150, 5), pady=5)
-
-	# GUI autofills today's date
-	def autofill_today_in_date(self, f):
-		self.autofill_today_label = tk.Label(f, text="Today's Date: ")
-		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"))
-		self.autofill_today_label.grid(row=2, column=0, columnspan=3, padx=(150, 5), pady=5)
-		self.autofill_today_date.grid(row=2, column=3, columnspan=3, padx=5, pady=5)
-
-	# def make_separator_at_row(self, r):
-	# 	ttk.Separator(self.mainframe ,orient=tk.HORIZONTAL).grid(row=r, column=0, columnspan=14, sticky='ew', pady=20)
+	def make_separator_at_row(self):
+		ttk.Separator(self.mainframe ).pack(side='top', pady=10, padx = 250)
 
 	#creates back button interface
 	def back_button(self,f):
 		self.back_button = tk.Radiobutton(f, text="Back", indicatoron=0, value="Back", padx = 50, command = lambda : self.main_menu(f))
-		self.back_button.grid(row=0, column=0)
+		# self.back_button.grid(row=0, column=0)
+		self.back_button.pack(side='top')
+
+	def header(self, f):
+		helv36 = tkFont.Font(family='centurygothic', size=50, weight='normal')
+		self.header = tk.Label(f, text="Register", font = helv36, bg = 'lightblue', fg= 'black')
+		# self.header.grid(row=1, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.header.pack(side='top')
+
+	# GUI has ENTRY for technician which calls the ec.validate_technician function
+	def member_input(self, f):
+		
+		self.member_input = tk.Label(f, text="Enter your full name: ", bg = 'grey')
+		self.member_entry = tk.Entry(f, width=30)
+
+		# self.member_input.grid(row=3, column=0, columnspan=3, padx=(150, 5), pady=5)
+		# self.member_entry.grid(row=4, column=0, columnspan=6, padx=(150, 5), pady=5)
+		self.member_input.pack(side='top')
+		self.member_entry.pack(side='top')
+
+
+	# GUI autofills today's date
+	def autofill_today_in_date(self, f):
+		self.autofill_today_label = tk.Label(f, text="Today's Date: ", font = 'bold')
+		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"), font = 'centurygothic 12 italic')
+		# self.autofill_today_label.grid(row=2, column=0, columnspan=3, padx=(150, 5), pady=5)
+		# self.autofill_today_date.grid(row=2, column=3, columnspan=3, padx=5, pady=5)
+		self.autofill_today_label.pack(side='top')
+		self.autofill_today_date.pack(side='top')
+
 
 	def register_button(self, f):
 		self.register_button = tk.Button(f, text="Register")
 		self.register_button["command"] = lambda: self.run_logic(f)
-		self.register_button.grid(row=8, column=2, columnspan=5, pady=(20, 20), sticky='ew')
+		self.register_button.config(width = 20, height = 4)
+		# self.register_button.grid(row=8, column=2, columnspan=5, pady=(20, 20), sticky='ew')
+		self.register_button.pack(side='top')
 
 	#Caleed from ONLY the back button
 	def main_menu(self, master):
@@ -148,7 +164,7 @@ class Application(tk.Frame):
 		# print(self.member)
 		self.member = self.member_entry.get()
 		try:
-			self.register_label.grid_forget()
+			self.register_label.pack_forget()
 		except:
 			print("No register label")
 		self.register(f)
@@ -156,7 +172,8 @@ class Application(tk.Frame):
 
 	def register(self, f):
 		self.register_label = tk.Label(f, text= "Thanks for registering for the CSULB Table Tennis & Badminton Club", bg="orange", width = 55)
-		self.register_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
+		# self.register_label.grid(row=10, column=0, columnspan=1, padx=(150, 5), pady=5)
+		self.register_label.pack(side='bottom')
 
 	def dummy(self, top):
 		print("Dummy function")

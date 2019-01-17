@@ -59,11 +59,15 @@ class Application(tk.Frame):
 
 		# self.embed_logo(mainframe)
 		# rows 0-2, cols 10-14 size 1x3
-		# self.make_separator_at_row(4)
 		self.back_button(mainframe)
+		self.make_separator_at_row()
 		self.header(mainframe)
+		self.make_separator_at_row()
 		self.autofill_today_in_date(mainframe)
+		self.make_separator_at_row()
 		self.member_input(mainframe)
+		self.make_separator_at_row()
+		self.make_separator_at_row()
 		self.sign_in_button(mainframe)
 		# self.paid(mainframe)
 		# self.unpaid(mainframe)
@@ -75,17 +79,27 @@ class Application(tk.Frame):
 	# 	self.logo_label = tk.Label(f, image=self.logo)
 	# 	self.logo_label.grid(row=0, column=7, rowspan=3, columnspan=3)
 
+	def make_separator_at_row(self):
+		ttk.Separator(self.mainframe ).pack(side='top', pady=10)
+
+	#creates back button interface
+	def back_button(self,f):
+		self.back_button = tk.Radiobutton(f, text="Back", indicatoron=0, value="Back", padx = 50, command = lambda : self.main_menu(f))
+		# self.back_button.grid(row=0, column=0)
+		self.back_button.pack(side='top')
+
 	def header(self, f):
-		helv36 = tkFont.Font(family='centurygothic', size=72, weight='normal')
-		self.header = tk.Label(f, text="SIGN IN", font = helv36, background = 'red')
-		self.header.grid(row=1, column=0, columnspan=3, padx=(150, 5), pady=5)
-		# self.header.pack(side="top")
+		helv36 = tkFont.Font(family='centurygothic', size=40, weight='normal')
+		self.header = tk.Label(f, text="Sign In", font = helv36, background = 'red')
+		# self.header.grid(row=1, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.header.pack(side="top")
 
 	# GUI has ENTRY for technician which calls the ec.validate_technician function
 	def member_input(self, f):
 
-		self.member_input_label = tk.Label(f, text="Select your name: ")
-		self.member_input_label.grid(row=4, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.member_input_label = tk.Label(f, text="Select your name: ", fg='black', bg='grey')
+		# self.member_input_label.grid(row=4, column=0, columnspan=3, padx=(150, 5), pady=5)
+		self.member_input_label.pack(side='top')
 
 		options = {
 		'Preston Wong', 'Matthew Rahe',
@@ -108,7 +122,9 @@ class Application(tk.Frame):
 		self.variable = StringVar()
 		self.variable.set("Click AND Hold")
 		self.menu = OptionMenu(f, self.variable, *options, command = self.func)
-		self.menu.grid(row = 5, column = 1)
+		# self.menu.grid(row = 5, column = 1)
+		self.menu.config(width = 15, height = 2)
+		self.menu.pack(side='top')
 		self.func(self.variable) # Get member variable that is selected by user
 
 
@@ -118,18 +134,12 @@ class Application(tk.Frame):
 
 	# GUI autofills today's date
 	def autofill_today_in_date(self, f):
-		self.autofill_today_label = tk.Label(f, text="Today's Date: ")
-		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"))
-		self.autofill_today_label.grid(row=2, column=0, columnspan=3, padx=(150, 5), pady=5)
-		self.autofill_today_date.grid(row=2, column=2, columnspan=3, padx=5, pady=5)
-
-	# def make_separator_at_row(self, r):
-	# 	ttk.Separator(self.mainframe ,orient=tk.HORIZONTAL).grid(row=r, column=0, columnspan=14, sticky='ew', pady=20)
-
-	#creates back button interface
-	def back_button(self,f):
-		self.back_button = tk.Radiobutton(f, text="Back", indicatoron=0, value="Back", padx = 50, command = lambda : self.main_menu(f))
-		self.back_button.grid(row=0, column=0)
+		self.autofill_today_label = tk.Label(f, text="Today's Date: ", font = 'bold')
+		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"), font = 'centurygothic 12 italic')
+		# self.autofill_today_label.grid(row=2, column=0, columnspan=3, padx=(150, 5), pady=5)
+		# self.autofill_today_date.grid(row=2, column=2, columnspan=3, padx=5, pady=5)
+		self.autofill_today_label.pack(side='top')
+		self.autofill_today_date.pack(side='top')
 
 	#Called from ONLY the back button
 	def main_menu(self, master):
@@ -172,18 +182,20 @@ class Application(tk.Frame):
 	def sign_in_button(self, f):
 		self.sign_in_button = tk.Button(f, text="Sign In")
 		self.sign_in_button["command"] = lambda: self.run_logic(f)
-		self.sign_in_button.grid(row=8, column=0, columnspan=2, pady=(20, 20), sticky='ew')
+		self.sign_in_button.config(width = 20, height = 4)
+		# self.sign_in_button.grid(row=8, column=0, columnspan=2, pady=(20, 20), sticky='ew')
+		self.sign_in_button.pack(side='top')
 		
 
 	# Called by the sign in button
 	def run_logic(self, f):
 		# print(self.member)
 		try:
-			self.paid_label.grid_forget()
+			self.paid_label.pack_forget()
 		except:
 			print("No paid label")
 		try:
-			self.unpaid_label.grid_forget()
+			self.unpaid_label.pack_forget()
 		except:
 			print("No paid label")
 		paidStatus = gslog.main(self.member)
@@ -197,12 +209,14 @@ class Application(tk.Frame):
 
 	def paid(self, f):
 		self.paid_label = tk.Label(f, text= "PAID", bg="lightgreen", width = 20, height = 4)
-		self.paid_label.grid(row=10, column=0, columnspan=1)
+		# self.paid_label.grid(row=10, column=0, columnspan=1)
+		self.paid_label.pack(side='bottom')
 
 
 	def unpaid(self, f):
 		self.unpaid_label = tk.Label(f, text= "UNPAID", bg="red", width =20, height = 4)
-		self.unpaid_label.grid(row=10, column=0, padx= 10, pady=5)
+		# self.unpaid_label.grid(row=10, column=0, padx= 10, pady=5)
+		self.unpaid_label.pack(side='bottom')
 
 	def dummy(self, top):
 		print("Dummy function")

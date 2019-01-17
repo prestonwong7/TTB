@@ -59,11 +59,16 @@ class Application(tk.Frame):
 
 		# self.embed_logo(mainframe)
 		# rows 0-2, cols 10-14 size 1x3
-		# self.make_separator_at_row(4)
+		# self.make_separator_at_row()
 		self.back_button(mainframe)
+		self.make_separator_at_row()
 		self.header(mainframe)
+		self.make_separator_at_row()
 		self.autofill_today_in_date(mainframe)
+		self.make_separator_at_row()
 		self.member_input(mainframe)
+		self.make_separator_at_row()
+		self.make_separator_at_row()
 		self.oneDayButton(mainframe)
 		# self.paid(mainframe)
 		# self.unpaid(mainframe)
@@ -75,6 +80,9 @@ class Application(tk.Frame):
 	# 	self.logo_label = tk.Label(f, image=self.logo)
 	# 	self.logo_label.grid(row=0, column=7, rowspan=3, columnspan=3)
 
+	def make_separator_at_row(self):
+		ttk.Separator(self.mainframe ).pack(side='top', pady=10)
+
 	#creates back button interface
 	def back_button(self,f):
 		self.back_button = tk.Radiobutton(f, text="Back", justify = LEFT, 
@@ -83,13 +91,13 @@ class Application(tk.Frame):
 		self.back_button.pack(side="top")
 
 	def header(self, f):
-		self.header = tk.Label(f, text="$2 One Day Pass", fg = 'black', bg = 'lightgreen', height = 3)
+		helv36 = tkFont.Font(family='centurygothic', size=40, weight='normal')
+		self.header = tk.Label(f, text="$2 One Day Pass", font = helv36, fg = 'black', bg = 'lightgreen')
 		# self.header.grid(row=1, column=0, columnspan=3, padx=(150, 5), pady=5)
 		self.header.pack(side="top")
 
 	# GUI has ENTRY for technician which calls the ec.validate_technician function
 	def member_input(self, f):
-		
 		self.member_input = tk.Label(f, text="Enter your full name: ", bg = "grey", fg= "white")
 		self.member_entry = tk.Entry(f, width=30)
 
@@ -100,15 +108,20 @@ class Application(tk.Frame):
 
 	# GUI autofills today's date
 	def autofill_today_in_date(self, f):
-		self.autofill_today_label = tk.Label(f, text="Today's Date: ")
-		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"))
+		self.autofill_today_label = tk.Label(f, text="Today's Date: ", font = 'bold')
+		self.autofill_today_date = tk.Label(f, text=datetime.datetime.now().strftime("%m/%d/%y"), font = 'centurygothic 12 italic')
 		# self.autofill_today_label.grid(row=2, column=0, columnspan=3, padx=(150, 5), pady=5)
 		# self.autofill_today_date.grid(row=2, column=2, columnspan=3, padx=5, pady=5)
 		self.autofill_today_label.pack(side="top")
 		self.autofill_today_date.pack(side="top")
 
-	# def make_separator_at_row(self, r):
-	# 	ttk.Separator(self.mainframe ,orient=tk.HORIZONTAL).grid(row=r, column=0, columnspan=14, sticky='ew', pady=20)
+	#f is needed for GUI
+	def oneDayButton(self, f):
+		self.oneDayButton = tk.Button(f, text="Get One Day Pass")
+		self.oneDayButton["command"] = lambda: self.run_logic(f)
+		self.oneDayButton.config(width = 20, height = 4)
+		# self.oneDayButton.grid(row=8, column=0, columnspan=5, pady=(20, 20), sticky='ew')
+		self.oneDayButton.pack(side="top")
 
 	#Called from ONLY the back button
 	def main_menu(self, master):
@@ -147,20 +160,12 @@ class Application(tk.Frame):
 		else:
 			run_gui(parent)
 
-	#f is needed for GUI
-	def oneDayButton(self, f):
-		self.oneDayButton = tk.Button(f, text="Get One Day Pass")
-		self.oneDayButton["command"] = lambda: self.run_logic(f)
-		# self.oneDayButton.grid(row=8, column=0, columnspan=5, pady=(20, 20), sticky='ew')
-		self.oneDayButton.pack(side="top")
-		
-
 	# Called by the sign in button
 	def run_logic(self, f):
 		# print(self.member)
 		self.member = self.member_entry.get()
 		try:
-			self.paid_label.grid_forget()
+			self.paid_label.pack_forget()
 		except:
 			print("No paid label")
 		self.paid(f)
