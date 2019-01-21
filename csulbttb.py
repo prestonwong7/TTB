@@ -30,7 +30,7 @@ if __name__ == "__main__":
 	# Show button for cert check -> cert_chec1_interface.py
 	# Show a picture of cerebro
 	root = tk.Tk()
-	# root.iconbitmap(resource_path('img/icon.ico'))
+	root.iconbitmap(resource_path('icon.ico'))
 	w, h = root.winfo_screenwidth(), root.winfo_screenheight()
 	root.geometry("{}x{}+0+0".format(1000, 1000))
 	root.wm_title("CSULB Table Tennis & Badminton Software")

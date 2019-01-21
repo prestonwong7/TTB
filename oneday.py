@@ -127,7 +127,7 @@ class Application(tk.Frame):
 	def main_menu(self, master):
 		self.master.destroy()
 		root = tk.Tk()
-		# root.iconbitmap(resource_path('img/icon.ico'))
+		root.iconbitmap(resource_path('icon.ico'))
 		w, h = root.winfo_screenwidth(), root.winfo_screenheight()
 		root.geometry("{}x{}+0+0".format(1000, 1000))
 		root.wm_title("CSULB Table Tennis & Badminton")
@@ -223,7 +223,7 @@ def run_gui(parent):
 	# print(resource_path('img/icon.ico'))
 	parent.destroy()
 	root = tk.Tk()
-	# root.iconbitmap(resource_path('img/icon.ico'))
+	root.iconbitmap(resource_path('icon.ico'))
 	w, h = root.winfo_screenwidth(), root.winfo_screenheight()
 	#root.geometry("{}x{}+0+0".format(w, h))
 	root.geometry("{}x{}+0+0".format(550, 540))
