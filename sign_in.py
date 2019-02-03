@@ -6,6 +6,7 @@ import sys
 import google_sheet_log as gslog
 import tkinter.font as tkFont
 # from asana_automate import main
+import urllib.request
 
 import os
 import register
@@ -101,31 +102,41 @@ class Application(tk.Frame):
 		# self.member_input_label.grid(row=4, column=0, columnspan=3, padx=(150, 5), pady=5)
 		self.member_input_label.pack(side='top')
 
-		options = {
-		'Preston Wong', 'Matthew Rahe',
-		'Ken Le','Vincent Le',
-		'Danny Nguyen','Richard Son','Jocelyn Som',
-		'Daniel Pham','Hikaru Takasugi','Christian Reyes',
-		'Diana Wong','Max Rassavong','Jeffrey Kesuma',
-		'Jose Salazar','Alexandra Kirkendall','Ngan Ta',
-		'Adalina Vu', 'Andy Nguyen', 'Joyce Nguyen',
-		'An Nguyen','Steve Fang', 'Christopher Imantaka',
-		'Julian Lam', 'Dina Bui', 'Larakaye Villanueva',
-		'Christian Wu',	'Alan Xazer','Nathan Mora',
-		'Andy Chan','Ben Lou','Peter Kim',
-		'Amanda Kim','Ethan Levine','Caryn Hoang',
-		'Jalon Flores','Richard Le','Patrick Pham',
-		'Joseph Kim', 'Shanni Chen', 'Leanne Deng', 'Tristan Nguyen',
-		'Joey Tran', 'Anthony Au Yeung'
-		}
-		options = sorted(options)
-		self.variable = StringVar()
-		self.variable.set("Click AND Hold")
-		self.menu = OptionMenu(f, self.variable, *options, command = self.func)
-		# self.menu.grid(row = 5, column = 1)
-		self.menu.config(width = 15, height = 2)
-		self.menu.pack(side='top')
-		self.func(self.variable) # Get member variable that is selected by user
+		# options = [
+		# 'Preston Wong', 'Matthew Rahe',
+		# 'Ken Le','Vincent Le',
+		# 'Danny Nguyen','Richard Son','Jocelyn Som',
+		# 'Daniel Pham','Hikaru Takasugi','Christian Reyes',
+		# 'Diana Wong','Max Rassavong','Jeffrey Kesuma',
+		# 'Jose Salazar','Alexandra Kirkendall','Ngan Ta',
+		# 'Adalina Vu', 'Andy Nguyen', 'Joyce Nguyen',
+		# 'An Nguyen','Steve Fang', 'Christopher Imantaka',
+		# 'Julian Lam', 'Dina Bui', 'Larakaye Villanueva',
+		# 'Christian Wu',	'Alan Xazer','Nathan Mora',
+		# 'Andy Chan','Ben Lou','Peter Kim',
+		# 'Amanda Kim','Ethan Levine','Caryn Hoang',
+		# 'Jalon Flores','Richard Le','Patrick Pham',
+		# 'Joseph Kim', 'Shanni Chen', 'Leanne Deng', 'Tristan Nguyen',
+		# 'Joey Tran', 'Anthony Au Yeung'
+		# ]
+		try:
+			self.nointernet_label.pack_forget()
+		except:
+			print("")
+		checkInternet = self.internet_on()
+		if (checkInternet == True): 
+			options = gslog.get_options()
+			options = sorted(options)
+			self.variable = StringVar()
+			self.variable.set("Click AND Hold")
+			self.menu = OptionMenu(f, self.variable, *options, command = self.func)
+			# self.menu.grid(row = 5, column = 1)
+			self.menu.config(width = 15, height = 2)
+			self.menu.pack(side='top')
+			self.func(self.variable) # Get member variable that is selected by user
+		else:
+			self.no_internet(f)
+			print("NO internet")
 
 
 	def func(self, value):
@@ -185,7 +196,15 @@ class Application(tk.Frame):
 		self.sign_in_button.config(width = 20, height = 4)
 		# self.sign_in_button.grid(row=8, column=0, columnspan=2, pady=(20, 20), sticky='ew')
 		self.sign_in_button.pack(side='top')
-		
+	
+	def internet_on(self):
+		try:
+			htmlfile = urllib.request.urlopen('https://www.google.com/', timeout=1)
+			htmltext= htmlfile.read()
+			# print(htmltext)
+			return True
+		except: 
+			return False
 
 	# Called by the sign in button
 	def run_logic(self, f):
@@ -193,19 +212,33 @@ class Application(tk.Frame):
 		try:
 			self.paid_label.pack_forget()
 		except:
-			print("No paid label")
+			print("")
 		try:
 			self.unpaid_label.pack_forget()
 		except:
-			print("No paid label")
-		paidStatus = gslog.main(self.member)
-		# print("paidstatus", paidStatus)
-		if (paidStatus == "PAID"):
-			self.paid(f)
-			gslog.sign_in(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
+			print("")
+		try:
+			self.nointernet_label.pack_forget()
+		except:
+			print("")
+		checkInternet = self.internet_on()
+		if (checkInternet == True): 
+			paidStatus = gslog.main(self.member)
+			# print("paidstatus", paidStatus)
+			if (paidStatus == "PAID"):
+				self.paid(f)
+				gslog.sign_in(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
+			else:
+				self.unpaid(f)
+				gslog.sign_in(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
 		else:
-			self.unpaid(f)
-			gslog.sign_in(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
+			self.no_internet(f)
+			print("NO internet")
+
+	def no_internet(self,f):
+		self.nointernet_label = tk.Label(f, text= "NO INTERNET", bg="orange", width = 20, height = 4)
+		# self.paid_label.grid(row=10, column=0, columnspan=1)
+		self.nointernet_label.pack(side='bottom')
 
 	def paid(self, f):
 		self.paid_label = tk.Label(f, text= "PAID", bg="lightgreen", width = 20, height = 4)

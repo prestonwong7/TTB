@@ -15,6 +15,14 @@ def main(name):
     print(personPaidStatus)
     return personPaidStatus
 
+def get_options():
+    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret_sheet.json', scope)
+    gc = gspread.authorize(credentials)
+    gsheet = gc.open('MemberList').sheet1
+    options = gsheet.col_values(1)
+    return options
+
 def sign_in(name, date):
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
     credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret_sheet.json', scope)
@@ -28,6 +36,8 @@ def register(name, date):
     gc = gspread.authorize(credentials)
     gsheet = gc.open('MemberSignIn').sheet1
     gsheet.append_row([name, 'Register', date])
+    gsheet = gc.open('MemberList').sheet1
+    gsheet.append_row([name, 'UNPAID'])
 
 def one_day(name, date):
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']

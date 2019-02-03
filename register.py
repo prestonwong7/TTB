@@ -6,6 +6,7 @@ import sys
 import google_sheet_log as gslog
 import tkinter.font as tkFont
 # from asana_automate import main
+import urllib.request
 
 import os
 import sign_in as si
@@ -167,8 +168,32 @@ class Application(tk.Frame):
 			self.register_label.pack_forget()
 		except:
 			print("No register label")
-		self.register(f)
-		gslog.register(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
+		try:
+			self.nointernet_label.pack_forget()
+		except:
+			print("")
+		checkInternet = self.internet_on()
+		if (checkInternet == True): 
+			self.register(f)
+			gslog.register(self.member, datetime.datetime.now().strftime("%m/%d/%y"))
+		else:
+			self.no_internet(f)
+			print("NO internet")
+
+	def internet_on(self):
+		try:
+			htmlfile = urllib.request.urlopen('https://www.google.com/', timeout=1)
+			print("hello")
+			htmltext= htmlfile.read()
+			print(htmltext)
+			return True
+		except: 
+			return False
+
+	def no_internet(self,f):
+		self.nointernet_label = tk.Label(f, text= "NO INTERNET", bg="orange", width = 20, height = 4)
+		# self.paid_label.grid(row=10, column=0, columnspan=1)
+		self.nointernet_label.pack(side='bottom')
 
 	def register(self, f):
 		self.register_label = tk.Label(f, text= "Thanks for registering for the CSULB Table Tennis & Badminton Club", bg="orange", width = 55)
