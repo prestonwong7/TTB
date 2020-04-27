@@ -1,6 +1,6 @@
-# CSULBTTB
+# TTB
 ## What is this?
-CSULB Table Tennis &amp; Badminton Software is an application created by me to quickly make sign in much more easier for students in the club. During fall semester, there were many students & non students who joined the club that didn't pay the club fee. With this software, every club member will now have to sign in and register, or use a one day pass. All sign in's will be uploaded into a google sheet that will keep track everyone who signs in.
+Table Tennis &amp; Badminton Software is an application created by me to quickly make sign in much more easier for students in the club. During fall semester, there were many students & non students who joined the club that didn't pay the club fee. With this software, every club member will now have to sign in and register, or use a one day pass. All sign in's will be uploaded into a google sheet that will keep track everyone who signs in.
 
 ![image](https://user-images.githubusercontent.com/30359951/51105065-d0630c80-179c-11e9-8dbb-707c4e4e1b40.png)
 ![image](https://user-images.githubusercontent.com/30359951/51292766-d9ccbe80-19c0-11e9-9677-7b399189d585.png)
